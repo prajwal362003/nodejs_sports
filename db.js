@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
-const mongoURL = "mongodb://0.0.0.0:27017/sports";
+require("dotenv").config();
+// const mongoURLLocal = "mongodb://0.0.0.0:27017/sports";
+const mongoURL = process.env.ONLINE_DB_URL;
+// const mongoURLLocal = process.env.LOCAL_DB_URL;
 
 mongoose.connect(mongoURL);
 

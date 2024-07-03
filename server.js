@@ -2,6 +2,9 @@ const db = require("./db");
 // const Player = require("../models/sports");
 // const indPlayer = require("./models/cricketPlayers");
 const bodyParser = require("body-parser");
+require("dotenv").config();
+
+const PORT = process.env.PORT || 3000;
 //1] FS & OS Modules
 
 // var os = require("os");
@@ -110,6 +113,7 @@ app.use("/sports", sportsRoutes);
 // Again using express router for the above two methods(POST & GET)
 const indPlayerRourtes = require("./routes/indPlayerRoutes");
 app.use("/indPlayer", indPlayerRourtes);
-app.listen(3000, () => {
+
+app.listen(PORT, () => {
   console.log("Server is running on port 3000");
 });
