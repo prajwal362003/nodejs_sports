@@ -114,6 +114,10 @@ app.use("/sports", sportsRoutes);
 const indPlayerRourtes = require("./routes/indPlayerRoutes");
 app.use("/indPlayer", indPlayerRourtes);
 
+// Bowler Route
+const bowlerRoutes = require("./routes/bowlerRoutes");
+app.use("/bowler", bowlerRoutes);
+
 app.listen(PORT, () => {
   console.log("Server is running on port 3000");
 });
