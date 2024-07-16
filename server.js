@@ -3,7 +3,9 @@ const db = require("./db");
 // const indPlayer = require("./models/cricketPlayers");
 const bodyParser = require("body-parser");
 require("dotenv").config();
-
+// const passport = require("passport");
+// const LocalStrategy = require("passport-local").Strategy;
+const passport = require("./auth");
 const PORT = process.env.PORT || 3000;
 //1] FS & OS Modules
 
@@ -21,9 +23,9 @@ const PORT = process.env.PORT || 3000;
 const express = require("express");
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Welcome to my hotel, how can i help you");
-});
+// app.get("/", (req, res) => {
+//   res.send("Welcome to my hotel, how can i help you");
+// });
 
 // app.get("/veg", (req, res) => {
 //   res.send("Welcome to the Prajwal's veg restaurant");
@@ -110,13 +112,48 @@ app.use("/sports", sportsRoutes);
 //   }
 // });
 
+// Middleware function
+const logRequest = (req, res, next) => {
+  console.log("Request was made to the server");
+  console.log(
+    `[${new Date().toLocaleString()}] Request Made to :  ${req.originalUrl}`
+  );
+  next();
+};
+
+// // Passing middleware (logRequest)
+// app.get("/", logRequest, (req, res) => {
+//   res.send("Welcome to our sports club Mr.MiddleWare");
+// });
+
+// Passing middleware to entire routes(sports,cricketPlayers,cricketBowlers)
+app.use(logRequest); // Middlewares for all routes
+
+// Now use the passport
+app.use(passport.initialize());
 // Again using express router for the above two methods(POST & GET)
-const indPlayerRourtes = require("./routes/indPlayerRoutes");
-app.use("/indPlayer", indPlayerRourtes);
+const indPlayerRoutes = require("./routes/indPlayerRoutes");
+// app.use("/indPlayer", indPlayerRourtes);
 
 // Bowler Route
 const bowlerRoutes = require("./routes/bowlerRoutes");
-app.use("/bowler", bowlerRoutes);
+// app.use("/bowler", bowlerRoutes); // if not using authentication then uncomment this
+
+// Route only for passport
+const localAuthMiddleware = passport.authenticate("local", { session: false });
+app.get("/", localAuthMiddleware, (req, res) => {
+  res.send("Welcome to our sports club Mr.MiddleWare");
+});
+
+app.use(
+  // if using authentication for this route, then uncomment this if commented
+  "/bowler",
+  localAuthMiddleware,
+  bowlerRoutes
+);
+
+// Route for indPlayer => authentication
+app.use("/indPlayer", localAuthMiddleware, indPlayerRoutes);
 
 app.listen(PORT, () => {
   console.log("Server is running on port 3000");

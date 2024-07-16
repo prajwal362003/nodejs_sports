@@ -17,6 +17,14 @@ const PlayerSchema = new mongoose.Schema({
     type: String,
     enum: ["hitman", "king", "thala"],
   },
+  username: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
 });
 
 const indPlayer = mongoose.model("IndividualPlayer", PlayerSchema);

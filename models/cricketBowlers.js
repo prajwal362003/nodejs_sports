@@ -23,6 +23,16 @@ const bowlerSchema = new mongoose.Schema({
     type: String,
     enum: ["seamer", "spinner", "medium-pacer", "china-man"],
   },
+
+  username: {
+    type: String,
+    required: true,
+  },
+
+  password: {
+    type: String,
+    required: true,
+  },
 });
 
 const bowler = mongoose.model("bowler", bowlerSchema);
