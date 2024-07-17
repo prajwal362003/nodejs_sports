@@ -155,6 +155,8 @@ app.use(
 // Route for indPlayer => authentication
 app.use("/indPlayer", localAuthMiddleware, indPlayerRoutes);
 
+// // Route for sports => authentication
+// app.use("/sports", localAuthMiddleware, sportsRoutes);
 app.listen(PORT, () => {
   console.log("Server is running on port 3000");
 });

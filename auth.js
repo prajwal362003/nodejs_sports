@@ -9,14 +9,18 @@ passport.use(
 
     // Authentication Logic
     try {
-      console.log("Received Credentials", username, password);
+      // console.log("Received Credentials", username, password);
       const user = await bowler.findOne({ username });
 
       if (!user) {
         return done(null, false, { message: "Incorrect Username" });
       }
 
-      const isPasswordMatch = user.password == password;
+      // Before hashing password
+      // const isPasswordMatch = user.password == password;
+
+      // After hashing password
+      const isPasswordMatch = await user.comparePassword(password);
       if (isPasswordMatch) {
         return done(null, user);
       } else {
