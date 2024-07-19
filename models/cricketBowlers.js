@@ -36,10 +36,11 @@ const bowlerSchema = new mongoose.Schema({
   },
 });
 
+// pres-save fn => we need to hash the password pre(before) irt enters in the database
 bowlerSchema.pre("save", async function (next) {
   const bowler = this;
   // Hash the password only if it has been modified or new
-  if (bowler.isModified("password") == false) return next();
+  if (!bowler.isModified("password")) return next();
   try {
     // hash password generation
     const salt = await bcrypt.genSalt(10);

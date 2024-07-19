@@ -22,7 +22,7 @@ passport.use(
       // After hashing password
       const isPasswordMatch = await user.comparePassword(password);
       if (isPasswordMatch) {
-        return done(null, user);
+        return done(null, user); // done(error,user,message(optional))
       } else {
         return done(null, false, { message: "Incorrect Password" });
       }
