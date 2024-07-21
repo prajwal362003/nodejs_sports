@@ -137,7 +137,7 @@ const indPlayerRoutes = require("./routes/indPlayerRoutes");
 
 // Bowler Route
 const bowlerRoutes = require("./routes/bowlerRoutes");
-// app.use("/bowler", bowlerRoutes); // if not using authentication then uncomment this
+app.use("/bowler", bowlerRoutes); // if not using authentication then uncomment this
 
 // Route only for passport
 const localAuthMiddleware = passport.authenticate("local", { session: false });
@@ -145,12 +145,12 @@ app.get("/", localAuthMiddleware, (req, res) => {
   res.send("Welcome to our sports club Mr.MiddleWare");
 });
 
-app.use(
-  // if using authentication for this route, then uncomment this if commented
-  "/bowler",
-  localAuthMiddleware,
-  bowlerRoutes
-);
+// app.use(
+//   // if using authentication for this route, then uncomment this if commented
+//   "/bowler",
+//   localAuthMiddleware,
+//   bowlerRoutes
+// );
 
 // Route for indPlayer => authentication
 app.use("/indPlayer", localAuthMiddleware, indPlayerRoutes);

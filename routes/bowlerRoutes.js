@@ -3,6 +3,7 @@ const router = express.Router();
 // const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const passport = require("../auth");
+const { jwtAuthMiddleware, generateToken } = require("../jwt");
 
 const bowler = require("../models/cricketBowlers");
 
@@ -24,6 +25,29 @@ router.post("/", async (req, res) => {
     const savedBowler = await newBowler.save();
     console.log("Data Saved Successfully");
     res.status(200).json(savedBowler);
+  } catch (err) {
+    console.log("Error saving data", err);
+    res.status(400).json({ err: "Error Saving Data" });
+  }
+});
+
+// Same above function for jwt token concept
+router.post("/signup", async (req, res) => {
+  try {
+    const bowlerData = req.body;
+    const newBowler = new bowler(bowlerData);
+    const savedBowler = await newBowler.save();
+    console.log("Data Saved Successfully");
+
+    const payload = {
+      id: savedBowler.id,
+      username: savedBowler.username,
+    };
+    const token = generateToken(payload);
+    console.log(JSON.stringify(payload));
+    // const token = generateToken(savedBowler.username); // savedBowler.username => payload [can pass anything of schema in payload]
+    console.log("Token is ", token);
+    res.status(200).json({ savedBowler: savedBowler, token: token });
   } catch (err) {
     console.log("Error saving data", err);
     res.status(400).json({ err: "Error Saving Data" });
