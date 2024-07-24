@@ -36,7 +36,7 @@ const bowlerSchema = new mongoose.Schema({
   },
 });
 
-// pre-save fn => we need to hash the password pre(before) irt enters in the database
+// pre-save fn => we need to hash the password pre(before) it enters in the database
 bowlerSchema.pre("save", async function (next) {
   const bowler = this;
   // Hash the password only if it has been modified or new
